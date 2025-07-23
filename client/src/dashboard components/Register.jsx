@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -46,6 +47,8 @@ const Register = () => {
       alert('Server error');
     }
   };
+
+   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -97,9 +100,9 @@ const Register = () => {
           onChange={handleChange}
           required
         />
-        <button type="submit" className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">
-          Register
-        </button>
+        
+
+        <button onClick={() => navigate("/login")} className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">Register</button>
 
         <p className="mt-4 text-sm text-center">
           Already have an account? <Link to="/login" className="text-blue-600 underline">Login</Link>
