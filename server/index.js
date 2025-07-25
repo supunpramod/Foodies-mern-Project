@@ -479,9 +479,15 @@ const userSchema = new mongoose.Schema(
       required: [true, 'Password is required'],
       minlength: 6,
     },
+    isOnline: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
+
+
 
 // Hash password before saving
 userSchema.pre('save', async function (next) {
@@ -491,7 +497,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('user', userSchema);
 
 app.post('/api/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
@@ -521,9 +527,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 
-
 // @POST /api/login
-
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
@@ -544,6 +548,10 @@ app.post('/api/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
+    // Update user online status
+    user.isOnline = true;
+    await user.save();
+
     // Optionally generate a token (e.g., JWT) here
 
     res.status(200).json({
@@ -553,6 +561,7 @@ app.post('/api/login', async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        isOnline: user.isOnline,
       },
     });
   } catch (err) {
@@ -560,6 +569,20 @@ app.post('/api/login', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find({}, 'firstName lastName isOnline');
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch users', error: error.message });
+  }
+});
+
+
+
+
+
 
 
 
