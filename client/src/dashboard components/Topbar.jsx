@@ -10,7 +10,11 @@ const Topbar = ({ sidebarOpen }) => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
-      setUserName(`${parsedUser.firstName} ${parsedUser.lastName}`);
+      const capitalize = (str) =>
+        str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : '';
+      const firstName = capitalize(parsedUser.firstName);
+      const lastName = capitalize(parsedUser.lastName);
+      setUserName(`${firstName} ${lastName}`);
     }
   }, []);
 

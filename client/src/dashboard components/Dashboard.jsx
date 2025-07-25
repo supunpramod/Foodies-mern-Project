@@ -134,64 +134,76 @@ const Dashboard = () => {
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-sm">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  User
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Action
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Time
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {recentActivity.length > 0 ? (
-                recentActivity.map((activity) => (
-                  <tr key={activity.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <img
-                          className="h-10 w-10 rounded-full"
-                          src={`https://ui-avatars.com/api/?name=${activity.user.replace(
-                            ' ',
-                            '+'
-                          )}`}
-                          alt=""
-                        />
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900 flex items-center gap-2">
-                            {activity.user}
-                            <span
-                              className={`inline-block w-2 h-2 rounded-full ${
-                                activity.isOnline ? 'bg-green-500' : 'bg-gray-400'
-                              }`}
-                              title={activity.isOnline ? 'Online' : 'Offline'}
-                            ></span>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{activity.action}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{activity.time}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td className="px-6 py-4 text-gray-500" colSpan={3}>
-                    No activity found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
+  <div className="overflow-x-auto">
+    <table className="min-w-full divide-y divide-gray-200">
+      <thead className="bg-gray-50">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            User
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Action
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Time
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200">
+        {recentActivity.length > 0 ? (
+          recentActivity.map((activity) => (
+            <tr key={activity.id}>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex items-center">
+                  <img
+                    className="h-10 w-10 rounded-full"
+                    src={`https://ui-avatars.com/api/?name=${activity.user.replace(
+                      ' ',
+                      '+'
+                    )}`}
+                    alt=""
+                  />
+                  <div className="ml-4">
+                    <div className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                      {activity.user
+                        .split(' ')
+                        .map(
+                          (name) =>
+                            name.charAt(0).toUpperCase() +
+                            name.slice(1).toLowerCase()
+                        )
+                        .join(' ')}
+                      <span
+                        className={`inline-block w-2 h-2 rounded-full ${
+                          activity.isOnline ? 'bg-green-500' : 'bg-gray-400'
+                        }`}
+                        title={activity.isOnline ? 'Online' : 'Offline'}
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {activity.action}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {activity.time}
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td className="px-6 py-4 text-gray-500" colSpan={3}>
+              No activity found.
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
+
     </main>
   );
 };
