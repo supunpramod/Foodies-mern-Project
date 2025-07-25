@@ -1,5 +1,5 @@
-import { Link, useLocation } from 'react-router-dom';
-import { HomeIcon, UsersIcon, FolderIcon, CalendarIcon, ChartBarIcon, CogIcon } from '@heroicons/react/24/outline';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { HomeIcon, UsersIcon, FolderIcon, CalendarIcon, ChartBarIcon, CogIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 
 const navItems = [
   { name: 'Dashboard', icon: HomeIcon, path: '/dashboard' }, // පාඨ "/" සිට "/dashboard" ලෙස වෙනස් කරන්න
@@ -12,6 +12,12 @@ const navItems = [
 
 const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
 
   return (
     <div className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-blue-700 text-white transition-all duration-300 ease-in-out h-screen flex flex-col`}>
@@ -36,10 +42,17 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
           ))}
         </ul>
       </nav>
-      <div className="w-full p-4">
+      <div className="w-full p-4 space-y-2">
         <button className="flex items-center w-full p-3 hover:bg-blue-600 rounded-lg transition-colors">
           <CogIcon className={`h-5 w-5 ${sidebarOpen ? 'mr-3' : 'mx-auto'}`} />
           {sidebarOpen && <span>Settings</span>}
+        </button>
+        <button 
+          onClick={handleLogout}
+          className="flex items-center w-full p-3 hover:bg-red-600 rounded-lg transition-colors"
+        >
+          <ArrowRightOnRectangleIcon className={`h-5 w-5 ${sidebarOpen ? 'mr-3' : 'mx-auto'}`} />
+          {sidebarOpen && <span>Logout</span>}
         </button>
       </div>
     </div>
